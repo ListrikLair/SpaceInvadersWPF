@@ -26,13 +26,13 @@ namespace SpaceInvadersWPF
 
         private List<Rectangle> itemsToRemove = new List<Rectangle>();
 
-        private int enemyImages = 0;
-        private int bulletTimer = 0;
+        private int enemyImages;
+        private int bulletTimer;
         private int bulletTimerLimit = 70;
-        private int enemyLimit = 0;
-        private int totalEnemies = 0;
+        private int enemyLimit;
+        private int totalEnemies;
         private int enemySpeed = 6;
-        private bool gameOver = false;
+        private bool gameOver;
 
         DispatcherTimer gameTimer = new DispatcherTimer();
         ImageBrush playerSkin = new ImageBrush();
