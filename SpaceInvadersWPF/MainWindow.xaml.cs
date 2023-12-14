@@ -29,6 +29,7 @@ namespace SpaceInvadersWPF
         private int enemyImages = 0;
         private int bulletTimer = 0;
         private int bulletTimerLimit = 70;
+        private int enemyLimit = 0;
         private int totalEnemies = 0;
         private int enemySpeed = 6;
         private bool gameOver = false;
@@ -47,8 +48,8 @@ namespace SpaceInvadersWPF
             player.Fill = playerSkin;
 
             MyCanvas.Focus();
-
-            MakeEnemies(10);
+            enemyLimit = 10;
+            MakeEnemies(enemyLimit);
         }
 
         private void gameLoop(object sender, EventArgs e)
@@ -148,6 +149,21 @@ namespace SpaceInvadersWPF
             {
                 MyCanvas.Children.Remove(i);
             }
+
+            if (totalEnemies == 1)
+            {
+                enemySpeed = 18;
+            } else if (totalEnemies < enemyLimit * 0.7)
+            {
+                enemySpeed = 12;
+            }
+            
+
+            if (totalEnemies <= 0)
+            {
+                enemiesLeft.Content = "Enemies Left: 0";
+                ShowGameOver("You Win! You saved the world from the aliens!");
+            }
         }
 
         private void KeyIsDown(object sender, KeyEventArgs e)
@@ -189,6 +205,12 @@ namespace SpaceInvadersWPF
 
                 MyCanvas.Children.Add(newBullet);
             }
+
+            if (e.Key == Key.Enter && gameOver)
+            {
+                System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
+                Application.Current.Shutdown();
+            }
         }
 
         private void EnemyBulletMaker(double x, double y)
@@ -226,7 +248,7 @@ namespace SpaceInvadersWPF
                     Fill = enemySkin
                 };
 
-                Canvas.SetTop(newEnemy, 10);
+                Canvas.SetTop(newEnemy, 30);
                 Canvas.SetLeft(newEnemy, left);
                 MyCanvas.Children.Add(newEnemy);
                 left -= 60;
@@ -277,7 +299,9 @@ namespace SpaceInvadersWPF
 
         private void ShowGameOver(string msg)
         {
-
+            gameOver = true;
+            gameTimer.Stop();
+            enemiesLeft.Content += " " + msg + " Press Enter to play again";
         }
     }
 }
